@@ -6,8 +6,9 @@ require 'grape/msgpack'
 class MockModel
   def initialize(name, age)
     @name = name
-    @age = age
+    @age  = age
   end
+
   attr_reader :name, :age
 end
 
@@ -16,6 +17,8 @@ class MockEntity < Grape::Entity
 end
 
 class MockAPI < Grape::API
+
+  content_type(:msgpack, 'application/x-msgpack')
   rescue_from :all
 
   default_format :msgpack
@@ -40,7 +43,7 @@ class MockAPI < Grape::API
     requires :name, type: String
   end
   post :input do
-    present name: params.name
+    present name: params[:name]
   end
 end
 

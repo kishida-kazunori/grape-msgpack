@@ -15,14 +15,33 @@ module Grape
     end
 
     module ErrorFormatter
+
       class << self
-        def call(message, backtrace, options = {}, env = nil)
-          result = message.is_a?(Hash) ? message : { error: message }
-          if (options[:rescue_options] || {})[:backtrace] && backtrace && !backtrace.empty?
+        include Grape::ErrorFormatter::Base
+
+        def call(message, backtrace, options = {}, env = nil, original_exception = nil)
+
+          result = wrap_message(present(message, env))
+
+          rescue_options = options[:rescue_options] || {}
+          if rescue_options[:backtrace] && backtrace && !backtrace.empty?
             result = result.merge(backtrace: backtrace)
+          end
+          if rescue_options[:original_exception] && original_exception
+            result = result.merge(original_exception: original_exception.inspect)
           end
           MessagePack.pack(result)
         end
+
+        private
+
+          def wrap_message(message)
+            if message.is_a?(Exceptions::ValidationErrors) || message.is_a?(Hash)
+              message
+            else
+              { error: message }
+            end
+          end
       end
     end
 
@@ -39,8 +58,6 @@ end
 Grape::Formatter.register(:msgpack, Grape::Msgpack::Formatter)
 Grape::ErrorFormatter.register(:msgpack, Grape::Msgpack::ErrorFormatter)
 Grape::Parser.register(:msgpack, Grape::Msgpack::Parser)
-
-Grape::ContentTypes::CONTENT_TYPES[:msgpack] = 'application/x-msgpack'
 
 if defined?(Grape::Entity)
   class Grape::Entity

@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'grape/msgpack/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "grape-msgpack"
-  spec.version       = Grape::Msgpack::VERSION
-  spec.authors       = ["Sho Kusano"]
-  spec.email         = ["rosylilly@aduca.org"]
-  spec.summary       = %q{Messagepack formatter for grape}
-  spec.description   = %q{Messagepack formatter for grape}
-  spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.name        = "grape-msgpack"
+  spec.version     = Grape::Msgpack::VERSION
+  spec.authors     = ["Sho Kusano"]
+  spec.email       = ["rosylilly@aduca.org"]
+  spec.summary     = %q{Messagepack formatter for grape}
+  spec.description = %q{Messagepack formatter for grape}
+  spec.homepage    = ""
+  spec.license     = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -24,6 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rack-test', '~> 0.6.2'
   spec.add_development_dependency 'grape-entity', '~> 0.5.0'
 
-  spec.add_dependency 'grape', '>= 0.16.1'
+  spec.add_dependency 'grape', '>=1.5.0'
   spec.add_dependency 'msgpack', '>= 0.7.4'
 end

@@ -1,0 +1,8 @@
+version: '2.2'
+services:
+  ruby_env:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
